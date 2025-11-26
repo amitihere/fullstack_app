@@ -34,13 +34,19 @@ const createGenre = async (req,res) => {
 }
 
 const findGenre = async (req,res) => {
-    const {name} = req.body
-    const getDetails = await prisma.genre.findFirst({
-        where: {
-            name:name
-        }
-    })
-    if(!getDetails) return res.status(404).json({message:"Genre Does not exists"})
+    const getDetails = await prisma.genre.findMany()
     return res.status(200).json({message:"Succesfully completed the et operation",data : getDetails})
 }
-module.exports = {createBookIfNotExists,createGenre,findGenre}
+
+const updateGenre = async (req,res) => {
+    const {name} = req.body;
+    const {id} = req.params;
+    await prisma.genre.update({
+        where: {
+            id: Number(id)
+        },
+        data: {name:name}
+    })
+    return res.status(201).json({message:"succesfully updated"})
+}
+module.exports = {createBookIfNotExists,createGenre,findGenre,updateGenre}
