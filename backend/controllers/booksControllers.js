@@ -49,4 +49,14 @@ const updateGenre = async (req,res) => {
     })
     return res.status(201).json({message:"succesfully updated"})
 }
-module.exports = {createBookIfNotExists,createGenre,findGenre,updateGenre}
+const deleteGenre = async (req,res) => {
+    const {id} = req.params
+
+    await prisma.genre.delete({
+        where: {
+            id: Number(id)
+        }
+    })
+    return res.status(204).send()
+}
+module.exports = {createBookIfNotExists,createGenre,findGenre,updateGenre,deleteGenre}
